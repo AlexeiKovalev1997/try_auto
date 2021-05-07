@@ -1,96 +1,39 @@
+import {objectivesElement} from '/cypress/support/page_objects/ObjectOfObjectives';
+import {login} from '/cypress/support/login';
+import {objectivesMethod} from '/cypress/support/page_objects/ObjectivesMethods';
+
 describe("Просмотр справочной информацию oб активных и архивных целях", () => {
     beforeEach(() => {
-        cy.visit('https://dev-auth.andersenlab.dev/login')
-        cy.clearCookies()
-        cy.get('input[id="login"]').type('portal.pm')
-        cy.get('input[id="password"]').type('OY1AE01anwlJ')
-        cy.get('button[class="btn-submit"]').click()
-        cy.wait(6000)
-        cy.get('div[class="menu-avatar"]').click()
-        cy.get('a[class="menu-item"]').contains(' My account ').click()
-        cy.get('ul[class="nav nav-tabs"]').find('li').contains('Objectives').click()
+        login.loginPortal()
+        objectivesMethod.toObjectivesPage()
     });
     it("Элементы таблиц", () => {
         //Objectives
-        cy.get('h1[class="employee-h1 objectives-header__title"]').first()
-            .should('have.text', 'Objectives')
-        cy.get('button[class="btn yellow"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('span[class="next-salary-date-label"]')
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-objective mat-column-objective ng-star-inserted"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-type mat-column-type ng-star-inserted"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-measure mat-column-measure ng-star-inserted"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-dueDate mat-column-dueDate ng-star-inserted"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-comment mat-column-comment ng-star-inserted"]').first()
-            .should('exist')
-            .and('be.visible')
-        cy.get('andteam-objectives-list[class="ng-star-inserted"] tr[class="mat-row ng-star-inserted"]')
-            .should('exist')
-            .and('be.visible')
+        objectivesElement.getTableTitle('objectives')
+        objectivesElement.getInfoButton('objectives')
+        objectivesElement.getObjectivesData()
+        objectivesElement.getTableObjective('objectives')
+        objectivesElement.getTableType('objectives')
+        objectivesElement.getTableMeasure('objectives')
+        objectivesElement.getTableDueDate('objectives')
+        objectivesElement.getTableComment('objectives')
+        objectivesElement.getTableObjString()
         //Archive
-        cy.get('h1[class="employee-h1 objectives-header__title"]').last()
-            .should('have.text', 'Archive')
-        cy.get('button[class="btn yellow"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-objective mat-column-objective ng-star-inserted"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-type mat-column-type ng-star-inserted"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-measure mat-column-measure ng-star-inserted"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-dueDate mat-column-dueDate ng-star-inserted"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('th[class="mat-header-cell cdk-column-comment mat-column-comment ng-star-inserted"]').last()
-            .should('exist')
-            .and('be.visible')
-        cy.get('div[class="archive-objects-list ng-star-inserted"] tr[class="mat-row ng-star-inserted"]')
-            .should('exist')
-            .and('be.visible')
-        cy.get('.archive-objects-list.ng-star-inserted td .ng-star-inserted span')
-            .then(($els) => {
-                return Cypress.$.makeArray($els).map((el) => el.innerText);
-            })
-            .then(($arr) => {
-                for (let i = 0; i < $arr.length; i++) {
-                    expect($arr[i]).to.be.oneOf(['Done', 'Failed']);
-                }
-            });
-        //Инфо в Obj
-        cy.get('button[class="btn yellow"]').first().click()
-        cy.get('div[class="objectives-instruction"]')
-            .should('exist')
-            .and('be.visible')
-        cy.get('button[class="objectives-instruction-btn"]').click()
-        cy.get('body')
-            .should('not.contain', 'div[class="objectives-instruction"]')
-        //Инфо в Arch
-        cy.get('button[class="btn yellow"]').last().click()
-        cy.get('div[class="objectives-instruction"]')
-            .should('exist')
-            .and('be.visible')
-        cy.get('button[class="objectives-instruction-close"]').click()
-        cy.get('body')
-            .should('not.contain', 'div[class="objectives-instruction"]')
-
-        cy.get('button[class="btn yellow"]').first().click()
-        cy.get('body').click(1, 600)
-        cy.get('body')
-            .should('not.contain', 'div[class="objectives-instruction"]')
+        objectivesElement.getTableTitle('archive')
+        objectivesElement.getInfoButton('archive')
+        objectivesElement.getTableObjective('archive')
+        objectivesElement.getTableType('archive')
+        objectivesElement.getTableMeasure('archive')
+        objectivesElement.getTableDueDate('archive')
+        objectivesElement.getTableComment('archive')
+        objectivesElement.getTableStatus()
+        //Модалка в Obj
+        objectivesElement.openModal('objectives')
+        objectivesElement.closeModalGotBTN()
+        //Модалка в Arch
+        objectivesElement.openModal('archive')
+        objectivesElement.closeModalCloseBTN()
+        objectivesElement.openModal('archive')
+        objectivesElement.closeModalSpaсe()
     });
 });
