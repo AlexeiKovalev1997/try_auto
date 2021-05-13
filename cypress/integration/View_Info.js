@@ -1,9 +1,9 @@
 import {objectivesElement} from '/cypress/support/page_objects/ObjectOfObjectives';
-import {login} from '/cypress/support/login';
-import {objectivesMethod} from '/cypress/support/page_objects/ObjectivesMethods';
+import {login} from '/cypress/support/page_objects/Login';
+import {objectivesMethod} from '/cypress/support/page_objects/MainPagePO';
 
 describe("Просмотр справочной информацию oб активных и архивных целях", () => {
-    beforeEach(() => {
+    before(() => {
         login.loginPortal()
         objectivesMethod.toObjectivesPage()
     });
@@ -11,7 +11,7 @@ describe("Просмотр справочной информацию oб акт�
         //Objectives
         objectivesElement.getTableTitle('objectives')
         objectivesElement.getInfoButton('objectives')
-        objectivesElement.getObjectivesData()
+        // objectivesElement.getObjectivesData() !!!почему?
         objectivesElement.getTableObjective('objectives')
         objectivesElement.getTableType('objectives')
         objectivesElement.getTableMeasure('objectives')
@@ -34,6 +34,6 @@ describe("Просмотр справочной информацию oб акт�
         objectivesElement.openModal('archive')
         objectivesElement.closeModalCloseBTN()
         objectivesElement.openModal('archive')
-        objectivesElement.closeModalSpaсe()
+        objectivesElement.closeModalSpace()
     });
 });
